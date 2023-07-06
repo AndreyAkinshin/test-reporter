@@ -2122,11 +2122,28 @@ function ellipsis(text, maxLength) {
     return text.substr(0, maxLength - 3) + '...';
 }
 exports.ellipsis = ellipsis;
-function formatTime(ms) {
-    if (ms > 1000) {
-        return `${Math.round(ms / 1000)}s`;
+function formatTime(milliseconds) {
+    milliseconds = Math.max(1, Math.round(milliseconds));
+    let ms = milliseconds % 1000;
+    milliseconds = (milliseconds - ms) / 1000;
+    let secs = milliseconds % 60;
+    milliseconds = (milliseconds - secs) / 60;
+    let mins = milliseconds % 60;
+    let hrs = (milliseconds - mins) / 60;
+    let result = "";
+    if (hrs > 0) {
+        result += hrs + "h ";
     }
-    return `${Math.round(ms)}ms`;
+    if (mins > 0 || result) {
+        result += (result ? ("0" + mins).slice(-2) : mins) + "m ";
+    }
+    if (secs > 0 || result) {
+        result += (result ? ("0" + secs).slice(-2) : secs) + "s ";
+    }
+    if (ms > 0 || result) {
+        result += (result ? ("00" + ms).slice(-3) : ms) + "ms";
+    }
+    return result.trim();
 }
 exports.formatTime = formatTime;
 
