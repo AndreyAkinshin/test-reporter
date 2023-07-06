@@ -182,7 +182,7 @@ function getSuitesReport(tr: TestRunResult, runIndex: number, options: ReportOpt
     const suitesTable = table(
       ['Test suite', 'Passed', 'Failed', 'Skipped', 'Time'],
       [Align.Left, Align.Right, Align.Right, Align.Right, Align.Right],
-      ...suites.map((s, suiteIndex) => {
+      ...suites.sort((a, b) => b.time - a.time).map((s, suiteIndex) => {
         const tsTime = formatTime(s.time)
         const tsName = s.name
         const skipLink = options.listTests === 'none' || (options.listTests === 'failed' && s.result !== 'failed')
